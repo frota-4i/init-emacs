@@ -1,0 +1,7 @@
+auto-save-list/
+elpa/
+elpy/
+transient/
+*~
+*#
+*.1
