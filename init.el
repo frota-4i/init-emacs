@@ -99,15 +99,54 @@
 ;; ====================================
 ;; Window Shortcuts
 ;; ====================================
-
-
+(global-set-key (kbd "C-<tab>") 'other-window) ;; Atalho para trocar de janelas no emacs
+(global-set-key (kbd "M-<down>") 'enlarge-window) ;; Atalho para redimencionar para baixo
+(global-set-key (kbd "M-<up>") 'shrink-window) ;; Atalho para redimencionar para cima
+(global-set-key (kbd "M-<left>") 'enlarge-window-horizontally) ;; Atalho para redimencionar para esquerda
+(global-set-key (kbd "M-<right>") 'shrink-window-horizontally) ;; Atalho para redimencionar para direita
 ;; ====================================
 ;; File Explores Menu
 ;; ====================================
 (require 'neotree) 
-(global-set-key (kbd "C-x C-5") 'neotree-toggle)
+(global-set-key (kbd "C-\\") 'neotree-toggle) ;; Atalho para barra de navegação
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq neo-window-fixed-size nil)
+;; ====================================
+;; Others Packages
+;; ====================================
+;; INstalação do pacote de auto complete
+(use-package auto-complete 
+	     :ensure t
+	     :init
+	     (progn
+	       (ac-config-default)
+	       (global-auto-complete-mode t)))
+
+;; Instalação do pacote ergoemacs
+(use-package ergoemacs-mode
+	     :ensure t
+	     :config
+	     (progn
+	       (setq ergoemacs-theme nil)
+	       (setq ergoemacs-keyboard-layout "us")
+	       (ergoemacs-mode 1)))
+
+;; Habilitação do modo de "called eletric"
+(defun electric-pair ()
+  "If at end of line, insert character pair without surrounding spaces.
+   Otherwise, just insert the typed character."
+  (interactive)
+  (if (eolp) (let (parens-require-spaces) (insert-pair)) 
+    (self-insert-command 1)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+	    (define-key python-mode-map "\"" 'electric-pair)
+            (define-key python-mode-map "\'" 'electric-pair)
+            (define-key python-mode-map "(" 'electric-pair)
+            (define-key python-mode-map "[" 'electric-pair)
+            (define-key python-mode-map "{" 'electric-pair)))
+
 
 ;; User-Defined init.el ends here
 (custom-set-variables
